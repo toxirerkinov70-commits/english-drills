@@ -1,0 +1,1169 @@
+<title>Every Day vs Right Now</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Karla:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+  :root{
+    --bg:#ECEFEE; --surface:#FBFCFB; --surface-2:#E4E9E7; --line:#CCD7D3;
+    --ink:#15201E; --ink-soft:#56635F;
+    --accent:#0E6B63; --accent-soft:#D5E8E4; --on-accent:#FFFFFF;
+    --simple:#9C6A15; --simple-soft:#F2E5C9;
+    --ok:#2C7A54; --ok-soft:#DAEDE2;
+    --bad:#B34239; --bad-soft:#F7DFDA;
+    --shadow:0 1px 2px rgba(20,40,36,.06), 0 8px 24px -16px rgba(20,40,36,.35);
+    --f-display:'Fraunces', Georgia, 'Times New Roman', serif;
+    --f-body:'Karla', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --f-mono:'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101614; --surface:#18211F; --surface-2:#212C29; --line:#2E3C38;
+      --ink:#E9EFEC; --ink-soft:#9AAAA5;
+      --accent:#54C5B6; --accent-soft:#12332F; --on-accent:#0B1513;
+      --simple:#DCA74A; --simple-soft:#33290E;
+      --ok:#5FC492; --ok-soft:#123526;
+      --bad:#E97D72; --bad-soft:#3B1F1C;
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.9);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101614; --surface:#18211F; --surface-2:#212C29; --line:#2E3C38;
+    --ink:#E9EFEC; --ink-soft:#9AAAA5;
+    --accent:#54C5B6; --accent-soft:#12332F; --on-accent:#0B1513;
+    --simple:#DCA74A; --simple-soft:#33290E;
+    --ok:#5FC492; --ok-soft:#123526;
+    --bad:#E97D72; --bad-soft:#3B1F1C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 26px -18px rgba(0,0,0,.9);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--f-body); font-size:16px; line-height:1.55;
+    -webkit-text-size-adjust:100%;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:0 56px}
+
+  /* ---------- yopishib turuvchi progress paneli ---------- */
+  .bar{
+    position:sticky; top:env(safe-area-inset-top, 0px); z-index:20;
+    background:var(--surface); border-bottom:1px solid var(--line);
+  }
+  .bar-in{
+    max-width:760px; margin:0 auto; padding:10px 16px;
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .bar-name{font-family:var(--f-display); font-weight:700; font-size:17px; letter-spacing:-.01em; margin-right:auto}
+  .counts{display:flex; gap:14px; font-family:var(--f-mono); font-size:13px; font-variant-numeric:tabular-nums}
+  .counts b{font-weight:600}
+  .counts .c-ok{color:var(--ok)}
+  .counts .c-left{color:var(--ink-soft)}
+  .track{flex:1 1 100%; height:5px; border-radius:99px; background:var(--surface-2); overflow:hidden}
+  .track > i{display:block; height:100%; width:0%; background:var(--accent); transition:width .35s ease}
+
+  /* ---------- kirish ---------- */
+  header.intro{padding-block:34px 22px}
+  .eyebrow{
+    font-family:var(--f-mono); font-size:11.5px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 10px;
+  }
+  h1{
+    font-family:var(--f-display); font-weight:700; font-size:clamp(30px, 7vw, 46px);
+    line-height:1.05; letter-spacing:-.02em; margin:0 0 12px; text-wrap:balance;
+  }
+  h1 em{font-style:normal; color:var(--simple)}
+  h1 span{color:var(--accent)}
+  .lede{margin:0; max-width:58ch; color:var(--ink-soft)}
+  .task{
+    margin-top:18px; border:1px solid var(--line); border-left:3px solid var(--accent);
+    border-radius:10px; background:var(--surface); padding:12px 14px; font-size:14.5px;
+  }
+  .task b{color:var(--ink)}
+
+  /* ---------- mashq kartalari ---------- */
+  .list{display:flex; flex-direction:column; gap:18px}
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:14px;
+    padding:16px 16px 14px; box-shadow:var(--shadow); position:relative;
+    border-left:3px solid var(--line);
+  }
+  .card.is-ok{border-color:var(--ok); border-left-color:var(--ok)}
+  .card.is-bad{border-left-color:var(--bad)}
+  .top{display:flex; align-items:center; gap:10px; margin-bottom:12px}
+  .num{font-family:var(--f-mono); font-size:13px; font-weight:600; color:var(--ink-soft); font-variant-numeric:tabular-nums}
+  .task-label{
+    font-family:var(--f-mono); font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .mark{margin-left:auto; font-size:18px; line-height:1; opacity:0; color:var(--ok)}
+  .card.is-ok .mark{opacity:1}
+
+  .answer{
+    min-height:58px; border:1.5px dashed var(--line); border-radius:10px;
+    background:var(--bg); padding:9px; display:flex; flex-wrap:wrap; gap:7px; align-items:flex-start;
+    transition:border-color .2s, background .2s;
+  }
+  .answer .ph{color:var(--ink-soft); font-size:14px; padding:6px 4px; font-style:italic}
+  .card.is-ok .answer{border-style:solid; border-color:var(--ok); background:var(--ok-soft)}
+  .card.is-bad .answer{border-color:var(--bad)}
+
+  .pool{display:flex; flex-wrap:wrap; gap:7px; margin-top:8px}
+  .pool-label{
+    font-family:var(--f-mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin:14px 0 0;
+  }
+
+  button{
+    font:inherit; color:inherit; cursor:pointer;
+    touch-action:manipulation; -webkit-tap-highlight-color:transparent;
+    -webkit-appearance:none; appearance:none;
+  }
+  .chip, .slot{
+    font-family:var(--f-body); font-size:16px; font-weight:500;
+    padding:9px 13px; border-radius:8px; border:1px solid var(--line);
+    background:var(--surface-2); color:var(--ink); line-height:1.25;
+    transition:transform .12s ease, background .15s, border-color .15s, opacity .15s;
+  }
+  .chip:hover, .slot:hover{border-color:var(--accent)}
+  .chip:active, .slot:active{transform:translateY(1px)}
+  .chip.used{opacity:.28; pointer-events:none; background:transparent; border-style:dashed}
+  .slot{background:var(--surface); border-color:var(--ink-soft)}
+  .slot.w-ok{background:var(--ok-soft); border-color:var(--ok); color:var(--ok)}
+  .slot.w-bad{background:var(--bad-soft); border-color:var(--bad); color:var(--bad)}
+  .card.is-ok .slot{background:var(--surface); border-color:var(--ok); pointer-events:none}
+
+  .actions{display:flex; flex-wrap:wrap; gap:8px; margin-top:13px; align-items:center}
+  .btn{
+    padding:8px 15px; border-radius:8px; border:1px solid transparent;
+    background:var(--accent); color:var(--on-accent); font-weight:700; font-size:14.5px;
+  }
+  .btn:hover{filter:brightness(1.06)}
+  .btn[disabled]{opacity:.45; cursor:default; filter:none}
+  .btn.ghost{background:transparent; color:var(--ink-soft); border-color:var(--line); font-weight:500}
+  .btn.ghost:hover{color:var(--ink); border-color:var(--ink-soft); filter:none}
+
+  .msg{margin-top:11px; font-size:14.5px; display:none; border-radius:9px; padding:9px 12px}
+  .msg.show{display:block}
+  .msg.ok{background:var(--ok-soft); color:var(--ok); font-weight:700}
+  .msg.bad{background:var(--bad-soft); color:var(--bad)}
+  .msg.info{background:var(--surface-2); color:var(--ink-soft)}
+  .msg small{color:var(--ink-soft); font-size:13.5px; line-height:1.5; display:inline-block; margin-top:3px}
+  .msg .sol{display:block; font-family:var(--f-display); font-size:17px; font-weight:500; color:var(--ink); margin-top:4px}
+
+  .finish{
+    margin-top:26px; border:1px solid var(--accent); background:var(--accent-soft);
+    border-radius:14px; padding:20px; display:none;
+  }
+  .finish.show{display:block}
+  .finish h2{font-family:var(--f-display); margin:0 0 6px; font-size:24px; color:var(--accent)}
+  .finish p{margin:0 0 14px; color:var(--ink)}
+  .foot{
+    margin-top:30px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    align-items:center; border-top:1px solid var(--line); padding-top:14px;
+    color:var(--ink-soft); font-size:13px;
+  }
+
+  /* ---------- bonus ---------- */
+  .bonus{
+    margin-top:26px; border:1px solid var(--line); border-radius:14px;
+    background:var(--surface); box-shadow:var(--shadow); overflow:hidden;
+  }
+  .bonus-head{
+    display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+    padding:16px; border-bottom:1px solid var(--line); background:var(--surface-2);
+  }
+  .bonus-head .lock{font-size:20px; line-height:1; flex:none}
+  .bonus-head h2{
+    font-family:var(--f-display); font-size:20px; margin:0; letter-spacing:-.01em;
+    flex:1 1 220px;
+  }
+  .bonus-gate{
+    font-family:var(--f-mono); font-size:12px; font-variant-numeric:tabular-nums;
+    color:var(--ink-soft); border:1px solid var(--line); border-radius:99px;
+    padding:4px 10px; background:var(--surface);
+  }
+  .bonus.open{border-color:var(--accent)}
+  .bonus.open .bonus-head{background:var(--accent-soft); border-bottom-color:var(--accent)}
+  .bonus.open .bonus-head h2{color:var(--accent)}
+  .bonus.open .bonus-gate{border-color:var(--accent); color:var(--accent); font-weight:600}
+  .bonus-body{padding:18px 16px 20px; display:none}
+  .bonus.open .bonus-body{display:block}
+  .bonus-shut{padding:16px; color:var(--ink-soft); font-size:14.5px; margin:0}
+  .bonus.open .bonus-shut{display:none}
+
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
+  @media (max-width:560px){ .grid2{grid-template-columns:1fr} }
+  .tense-box{border:1px solid var(--line); border-radius:11px; padding:14px; background:var(--bg)}
+  .tense-box.s{border-top:3px solid var(--simple)}
+  .tense-box.c{border-top:3px solid var(--accent)}
+  .tense-box h3{
+    font-family:var(--f-display); font-size:18px; margin:0 0 2px; letter-spacing:-.01em;
+  }
+  .tense-box.s h3{color:var(--simple)}
+  .tense-box.c h3{color:var(--accent)}
+  .tense-box .when{font-size:14px; color:var(--ink-soft); margin:0 0 12px}
+  .rowlist{display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none}
+  .rowlist li{display:grid; grid-template-columns:78px 1fr; gap:10px; align-items:baseline; font-size:14.5px}
+  .rowlist span{
+    font-family:var(--f-mono); font-size:10.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--ink-soft); padding-top:2px;
+  }
+  .rowlist code{
+    font-family:var(--f-mono); font-size:13.5px; color:var(--ink);
+    background:var(--surface-2); padding:1px 6px; border-radius:5px;
+  }
+  .rowlist em{font-style:normal; color:var(--ink-soft)}
+  .bonus-note{
+    margin:14px 0 0; padding:13px 14px; border-radius:11px;
+    background:var(--surface-2); font-size:14.5px;
+  }
+  .bonus-note b{display:block; font-family:var(--f-mono); font-size:10.5px; letter-spacing:.1em;
+    text-transform:uppercase; color:var(--ink-soft); margin-bottom:5px}
+  .bonus-note p{margin:0 0 7px}
+  .bonus-note p:last-child{margin-bottom:0}
+  .bonus-note code{font-family:var(--f-mono); font-size:13.5px; background:var(--surface); padding:1px 5px; border-radius:4px}
+
+  .warn{
+    margin:16px 0 0; border:1px solid var(--bad); border-left:4px solid var(--bad);
+    background:var(--bad-soft); color:var(--ink); border-radius:11px; padding:14px 15px;
+    font-size:16px; line-height:1.55;
+  }
+  .warn b{display:block; color:var(--bad); margin-bottom:4px; font-size:17px}
+  .warn ol{margin:8px 0 0; padding-left:20px}
+  .warn li{margin-bottom:4px}
+
+  :focus-visible{outline:2.5px solid var(--accent); outline-offset:2px; border-radius:6px}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
+  /* ---------- telefon uchun kattaroq o'lchamlar ---------- */
+  @media (max-width:640px){
+    body{font-size:17.5px; line-height:1.6}
+    .wrap{padding-inline:14px}
+    .bar-in{padding:9px 14px}
+    .bar-name{font-size:16px}
+    .counts{font-size:14px; gap:12px}
+    header.intro{padding-block:26px 18px}
+    .eyebrow{font-size:12px}
+    .lede{font-size:16.5px}
+    .task{font-size:16.5px; padding:14px}
+    .card{padding:15px 13px 13px}
+    .num{font-size:15px}
+    .task-label{font-size:12px}
+    .pool-label{font-size:12px}
+    .answer{min-height:64px; padding:10px}
+    .answer .ph{font-size:16px}
+    .chip, .slot{font-size:18px; padding:12px 15px; border-radius:9px}
+    .pool{gap:9px}
+    .answer{gap:9px}
+    .btn{font-size:16.5px; padding:12px 18px; border-radius:9px}
+    .msg{font-size:16.5px; padding:11px 13px}
+    .msg .sol{font-size:18px}
+    .msg small{font-size:15.5px}
+    .bonus-head h2{font-size:19px}
+    .bonus-shut{font-size:16.5px}
+    .rowlist li{grid-template-columns:1fr; gap:2px}
+    .foot{font-size:14.5px}
+  }
+</style>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="bar-name">Every Day vs Right Now</span>
+    <span class="counts">
+      <span class="c-ok">To&#700;g&#700;ri <b id="s-ok">0</b></span>
+      <span class="c-left">Qolgan <b id="s-left">20</b></span>
+    </span>
+    <span class="track"><i id="s-bar"></i></span>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="intro">
+    <p class="eyebrow">Present Simple &middot; Present Continuous &mdash; 20 ta mashq</p>
+    <h1>So&#700;zlarni tartibga sol: <em>every day</em> yoki <span>right now</span>?</h1>
+    <p class="lede">Har bir mashqda so&#700;zlar aralashib ketgan. So&#700;zni bosing &mdash; u yuqoridagi qatorga tushadi; qatordagi so&#700;zni bossangiz, u orqaga qaytadi. Gap to&#700;liq tuzilgach <b>Tekshirish</b> tugmasini bosing: javob shu zahoti to&#700;g&#700;ri yoki xato ekani ko&#700;rinadi. Xato bo&#700;lsa, tartib qaysi so&#700;zdan buzilgani belgilanadi, izoh va to&#700;g&#700;ri variant chiqadi &mdash; keyin qayta urinib ko&#700;rishingiz mumkin.</p>
+    <p class="task">Qaysi gapda qaysi zamon kerakligini <b>o&#700;zingiz aniqlaysiz</b> &mdash; gapdagi vaqt ifodasiga qarang. Sahifa oxirida <b>bonus</b> bor: uni 20 ta mashqdan kamida 18 tasini <b>birinchi urinishdayoq</b> to&#700;g&#700;ri yechgan o&#700;quvchi ochadi.</p>
+    <noscript>
+      <div class="warn">
+        <b>Mashqlar hozir ishlamaydi</b>
+        Bu sahifa fayl <b style="display:inline">ko&#700;rish rejimida</b> ochilgan (Telegram yoki &laquo;Fayllar&raquo; ilovasining ichki ko&#700;ruvchisi) &mdash; u tugmalarni ishlatmaydi. Gaplarni bosib tuzish uchun:
+        <ol>
+          <li>Pastdagi <b>Ulashish</b> belgisini bosing;</li>
+          <li><b>Safari&#700;da ochish</b> (yoki Chrome&#700;da ochish) ni tanlang.</li>
+        </ol>
+        Eng qulayi &mdash; o&#700;qituvchi bergan havolani to&#700;g&#700;ridan-to&#700;g&#700;ri brauzerda ochish.
+      </div>
+    </noscript>
+  </header>
+
+  <main class="list" id="list">
+      <section class="card" data-i="0">
+        <div class="top">
+          <span class="num">01</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">English</button>
+        <button class="chip" data-w="1">every</button>
+        <button class="chip" data-w="2">I</button>
+        <button class="chip" data-w="3">study</button>
+        <button class="chip" data-w="4">day</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="1">
+        <div class="top">
+          <span class="num">02</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">now</button>
+        <button class="chip" data-w="1">English</button>
+        <button class="chip" data-w="2">learning</button>
+        <button class="chip" data-w="3">I'm</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="2">
+        <div class="top">
+          <span class="num">03</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">every</button>
+        <button class="chip" data-w="1">goes</button>
+        <button class="chip" data-w="2">university</button>
+        <button class="chip" data-w="3">by</button>
+        <button class="chip" data-w="4">he</button>
+        <button class="chip" data-w="5">bus</button>
+        <button class="chip" data-w="6">day</button>
+        <button class="chip" data-w="7">to</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="3">
+        <div class="top">
+          <span class="num">04</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">now</button>
+        <button class="chip" data-w="1">waiting</button>
+        <button class="chip" data-w="2">she's</button>
+        <button class="chip" data-w="3">bus</button>
+        <button class="chip" data-w="4">the</button>
+        <button class="chip" data-w="5">for</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="4">
+        <div class="top">
+          <span class="num">05</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">coffee</button>
+        <button class="chip" data-w="2">morning</button>
+        <button class="chip" data-w="3">drink</button>
+        <button class="chip" data-w="4">I</button>
+        <button class="chip" data-w="5">the</button>
+        <button class="chip" data-w="6">in</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="5">
+        <div class="top">
+          <span class="num">06</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">TV</button>
+        <button class="chip" data-w="1">now</button>
+        <button class="chip" data-w="2">watching</button>
+        <button class="chip" data-w="3">she's</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="6">
+        <div class="top">
+          <span class="num">07</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">computer</button>
+        <button class="chip" data-w="1">my</button>
+        <button class="chip" data-w="2">every</button>
+        <button class="chip" data-w="3">works</button>
+        <button class="chip" data-w="4">brother</button>
+        <button class="chip" data-w="5">on</button>
+        <button class="chip" data-w="6">day</button>
+        <button class="chip" data-w="7">the</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="7">
+        <div class="top">
+          <span class="num">08</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">now</button>
+        <button class="chip" data-w="1">computer</button>
+        <button class="chip" data-w="2">my</button>
+        <button class="chip" data-w="3">is</button>
+        <button class="chip" data-w="4">brother</button>
+        <button class="chip" data-w="5">working</button>
+        <button class="chip" data-w="6">on</button>
+        <button class="chip" data-w="7">the</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="8">
+        <div class="top">
+          <span class="num">09</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">football</button>
+        <button class="chip" data-w="1">every</button>
+        <button class="chip" data-w="2">they</button>
+        <button class="chip" data-w="3">week</button>
+        <button class="chip" data-w="4">play</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="9">
+        <div class="top">
+          <span class="num">10</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">now</button>
+        <button class="chip" data-w="1">football</button>
+        <button class="chip" data-w="2">playing</button>
+        <button class="chip" data-w="3">are</button>
+        <button class="chip" data-w="4">they</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="10">
+        <div class="top">
+          <span class="num">11</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">at</button>
+        <button class="chip" data-w="1">usually</button>
+        <button class="chip" data-w="2">I</button>
+        <button class="chip" data-w="3">home</button>
+        <button class="chip" data-w="4">work</button>
+        <button class="chip" data-w="5">but</button>
+        <button class="chip" data-w="6">cafe</button>
+        <button class="chip" data-w="7">working</button>
+        <button class="chip" data-w="8">I'm</button>
+        <button class="chip" data-w="9">the</button>
+        <button class="chip" data-w="10">at</button>
+        <button class="chip" data-w="11">now</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="11">
+        <div class="top">
+          <span class="num">12</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">every</button>
+        <button class="chip" data-w="1">books</button>
+        <button class="chip" data-w="2">they</button>
+        <button class="chip" data-w="3">day</button>
+        <button class="chip" data-w="4">read</button>
+        <button class="chip" data-w="5">but</button>
+        <button class="chip" data-w="6">now</button>
+        <button class="chip" data-w="7">TV</button>
+        <button class="chip" data-w="8">watching</button>
+        <button class="chip" data-w="9">are</button>
+        <button class="chip" data-w="10">they</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="12">
+        <div class="top">
+          <span class="num">13</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">a</button>
+        <button class="chip" data-w="2">friend</button>
+        <button class="chip" data-w="3">my</button>
+        <button class="chip" data-w="4">book</button>
+        <button class="chip" data-w="5">reads</button>
+        <button class="chip" data-w="6">evening</button>
+        <button class="chip" data-w="7">in</button>
+        <button class="chip" data-w="8">the</button>
+        <button class="chip" data-w="9">but</button>
+        <button class="chip" data-w="10">playing</button>
+        <button class="chip" data-w="11">he's</button>
+        <button class="chip" data-w="12">computer</button>
+        <button class="chip" data-w="13">games</button>
+        <button class="chip" data-w="14">today</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="13">
+        <div class="top">
+          <span class="num">14</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">morning</button>
+        <button class="chip" data-w="1">I</button>
+        <button class="chip" data-w="2">every</button>
+        <button class="chip" data-w="3">run</button>
+        <button class="chip" data-w="4">but</button>
+        <button class="chip" data-w="5">today</button>
+        <button class="chip" data-w="6">running</button>
+        <button class="chip" data-w="7">not</button>
+        <button class="chip" data-w="8">I'm</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="14">
+        <div class="top">
+          <span class="num">15</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">work</button>
+        <button class="chip" data-w="2">he</button>
+        <button class="chip" data-w="3">to</button>
+        <button class="chip" data-w="4">goes</button>
+        <button class="chip" data-w="5">car</button>
+        <button class="chip" data-w="6">by</button>
+        <button class="chip" data-w="7">but</button>
+        <button class="chip" data-w="8">today</button>
+        <button class="chip" data-w="9">going</button>
+        <button class="chip" data-w="10">bus</button>
+        <button class="chip" data-w="11">by</button>
+        <button class="chip" data-w="12">he's</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="15">
+        <div class="top">
+          <span class="num">16</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">every</button>
+        <button class="chip" data-w="1">cooks</button>
+        <button class="chip" data-w="2">my</button>
+        <button class="chip" data-w="3">day</button>
+        <button class="chip" data-w="4">mom</button>
+        <button class="chip" data-w="5">food</button>
+        <button class="chip" data-w="6">but</button>
+        <button class="chip" data-w="7">now</button>
+        <button class="chip" data-w="8">talking</button>
+        <button class="chip" data-w="9">phone</button>
+        <button class="chip" data-w="10">she's</button>
+        <button class="chip" data-w="11">on</button>
+        <button class="chip" data-w="12">the</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="16">
+        <div class="top">
+          <span class="num">17</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">don't</button>
+        <button class="chip" data-w="2">English</button>
+        <button class="chip" data-w="3">I</button>
+        <button class="chip" data-w="4">at</button>
+        <button class="chip" data-w="5">learn</button>
+        <button class="chip" data-w="6">night</button>
+        <button class="chip" data-w="7">but</button>
+        <button class="chip" data-w="8">English</button>
+        <button class="chip" data-w="9">I'm</button>
+        <button class="chip" data-w="10">tonight</button>
+        <button class="chip" data-w="11">learning</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="17">
+        <div class="top">
+          <span class="num">18</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">every</button>
+        <button class="chip" data-w="1">breakfast</button>
+        <button class="chip" data-w="2">she</button>
+        <button class="chip" data-w="3">morning</button>
+        <button class="chip" data-w="4">has</button>
+        <button class="chip" data-w="5">but</button>
+        <button class="chip" data-w="6">today</button>
+        <button class="chip" data-w="7">breakfast</button>
+        <button class="chip" data-w="8">isn't</button>
+        <button class="chip" data-w="9">having</button>
+        <button class="chip" data-w="10">she</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="18">
+        <div class="top">
+          <span class="num">19</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">don't</button>
+        <button class="chip" data-w="2">weekends</button>
+        <button class="chip" data-w="3">I</button>
+        <button class="chip" data-w="4">work</button>
+        <button class="chip" data-w="5">on</button>
+        <button class="chip" data-w="6">but</button>
+        <button class="chip" data-w="7">Sunday</button>
+        <button class="chip" data-w="8">this</button>
+        <button class="chip" data-w="9">working</button>
+        <button class="chip" data-w="10">I'm</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+      <section class="card" data-i="19">
+        <div class="top">
+          <span class="num">20</span>
+          <span class="task-label">Gapni tuzing</span>
+          <span class="mark" aria-hidden="true">&#10003;</span>
+        </div>
+        <div class="answer" data-role="answer"><span class="ph">Gapni shu yerda tuzing&hellip;</span></div>
+        <p class="pool-label">Soʻzlar</p>
+        <div class="pool" data-role="pool">
+        <button class="chip" data-w="0">usually</button>
+        <button class="chip" data-w="1">studies</button>
+        <button class="chip" data-w="2">my</button>
+        <button class="chip" data-w="3">English</button>
+        <button class="chip" data-w="4">friend</button>
+        <button class="chip" data-w="5">but</button>
+        <button class="chip" data-w="6">now</button>
+        <button class="chip" data-w="7">math</button>
+        <button class="chip" data-w="8">he's</button>
+        <button class="chip" data-w="9">learning</button>
+        </div>
+        <div class="actions">
+          <button class="btn" data-act="check">Tekshirish</button>
+          <button class="btn ghost" data-act="clear">Tozalash</button>
+          <button class="btn ghost" data-act="hint">Maslahat</button>
+        </div>
+        <div class="msg" data-role="msg"></div>
+      </section>
+  </main>
+
+  <section class="finish" id="finish">
+    <h2>Barcha 20 ta mashq bajarildi</h2>
+    <p id="finish-text"></p>
+    <button class="btn" id="restart">Boshidan boshlash</button>
+  </section>
+
+  <section class="bonus" id="bonus">
+    <div class="bonus-head">
+      <span class="lock" id="bonus-icon" aria-hidden="true">&#128274;</span>
+      <h2 id="bonus-title">Bonus qulfda</h2>
+      <span class="bonus-gate"><b id="bonus-count">0</b>/20 &middot; kerak: 18</span>
+    </div>
+
+    <p class="bonus-shut">Bonus 20 ta mashqdan kamida <b>18 tasi birinchi urinishda to&#700;g&#700;ri</b> yechilganda ochiladi. Ichida nima borligi hozircha sir &mdash; avval mashqlarni tugating.</p>
+
+    <div class="bonus-body">
+      <div class="grid2">
+        <div class="tense-box s">
+          <h3>Present Simple</h3>
+          <p class="when">Har doim takrorlanadigan ish, odat, jadval va umumiy haqiqat uchun.</p>
+          <ul class="rowlist">
+            <li><span>Tasdiq</span><div><code>I / You / We / They + work</code><br><code>He / She / It + works</code></div></li>
+            <li><span>Inkor</span><div><code>don&#700;t / doesn&#700;t + work</code></div></li>
+            <li><span>Savol</span><div><code>Do / Does &hellip; work?</code></div></li>
+            <li><span>Belgilar</span><div><em>every day, usually, always, often, sometimes, never, on Mondays</em></div></li>
+            <li><span>Misol</span><div>I <b>study</b> English every day.<br>He <b>goes</b> to work by bus.</div></li>
+          </ul>
+        </div>
+
+        <div class="tense-box c">
+          <h3>Present Continuous</h3>
+          <p class="when">Aynan hozir yoki shu kunlarda vaqtincha davom etayotgan ish uchun.</p>
+          <ul class="rowlist">
+            <li><span>Tasdiq</span><div><code>am / is / are + working</code></div></li>
+            <li><span>Inkor</span><div><code>am not / isn&#700;t / aren&#700;t + working</code></div></li>
+            <li><span>Savol</span><div><code>Am / Is / Are &hellip; working?</code></div></li>
+            <li><span>Belgilar</span><div><em>now, right now, at the moment, today, tonight, this week, Look! Listen!</em></div></li>
+            <li><span>Misol</span><div>I&#700;m <b>learning</b> English now.<br>She <b>isn&#700;t having</b> breakfast today.</div></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="bonus-note">
+        <b>Uchta tez eslatma</b>
+        <p><b>1. Farqi bitta savolda.</b> &laquo;Har doim shundaymi?&raquo; &rarr; Simple. &laquo;Aynan hozir sodir bo&#700;lyaptimi?&raquo; &rarr; Continuous. Shuning uchun bir gapda ikkalasi ham bo&#700;lishi mumkin: <em>I usually work at home, but now I&#700;m working at the cafe.</em></p>
+        <p><b>2. -ing yozilishi.</b> <code>run &rarr; running</code> (oxirgi undosh ikkilanadi), <code>make &rarr; making</code> (oxirgi <code>-e</code> tushadi), <code>study &rarr; studying</code> (<code>-y</code> saqlanadi).</p>
+        <p><b>3. Continuous&#700;da ishlatilmaydigan fe&#700;llar.</b> <code>know, like, love, want, need, understand, have</code> (egalik ma&#700;nosida) &mdash; ular faqat Simple&#700;da keladi: <em>I know him</em>, <em>I&#700;m knowing him</em> emas.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span>Natija shu qurilma xotirasida saqlanadi &mdash; sahifani yopsangiz ham yo&#700;qolmaydi.</span>
+    <button class="btn ghost" id="clear-all">Hammasini tozalash</button>
+  </div>
+</div>
+
+<script>
+const DATA = [
+ {t:"English / every / I / study / day", tense:"simple",
+  hint:"«every day» — takrorlanuvchi ish → Present Simple: I study.",
+  answers:["I study English every day","Every day I study English"]},
+ {t:"now / English / learning / I'm", tense:"cont",
+  hint:"«now» — ayni damda → Present Continuous: I'm learning.",
+  answers:["I'm learning English now","Now I'm learning English"]},
+ {t:"every / goes / university / by / he / bus / day / to", tense:"simple",
+  hint:"«every day» → Present Simple. 3-shaxs birlikda fe'lga -s qo‘shiladi: he goes.",
+  answers:["He goes to university by bus every day","Every day he goes to university by bus"]},
+ {t:"now / waiting / she's / bus / the / for", tense:"cont",
+  hint:"«now» → she's waiting. «wait» fe'li «for» bilan keladi: wait for the bus.",
+  answers:["She's waiting for the bus now","Now she's waiting for the bus"]},
+ {t:"usually / coffee / morning / drink / I / the / in", tense:"simple",
+  hint:"«usually» — odat belgisi → Present Simple. Vaqt ifodasi: in the morning.",
+  answers:["I usually drink coffee in the morning","In the morning I usually drink coffee"]},
+ {t:"TV / now / watching / she's", tense:"cont",
+  hint:"«now» → she's watching TV.",
+  answers:["She's watching TV now","Now she's watching TV"]},
+ {t:"computer / my / every / works / brother / on / day / the", tense:"simple",
+  hint:"«every day» → my brother works (-s). Predlog: on the computer.",
+  answers:["My brother works on the computer every day","Every day my brother works on the computer"]},
+ {t:"now / computer / my / is / brother / working / on / the", tense:"cont",
+  hint:"«now» → is + working. Ega: my brother.",
+  answers:["My brother is working on the computer now","Now my brother is working on the computer"]},
+ {t:"football / every / they / week / play", tense:"simple",
+  hint:"«every week» → Present Simple: they play.",
+  answers:["They play football every week","Every week they play football"]},
+ {t:"now / football / playing / are / they", tense:"cont",
+  hint:"«now» → are + playing.",
+  answers:["They are playing football now","Now they are playing football"]},
+ {t:"at / usually / I / home / work / but / cafe / working / I'm / the / at / now", tense:"mix",
+  hint:"«usually» → Present Simple, «now» → Present Continuous. Ikki qism «but» bilan bog‘lanadi.",
+  answers:["I usually work at home but now I'm working at the cafe","I usually work at home but I'm working at the cafe now"]},
+ {t:"every / books / they / day / read / but / now / TV / watching / are / they", tense:"mix",
+  hint:"«every day» → read, «now» → are watching.",
+  answers:["They read books every day but now they are watching TV","They read books every day but they are watching TV now"]},
+ {t:"usually / a / friend / my / book / reads / evening / in / the / but / playing / he's / computer / games / today", tense:"mix",
+  hint:"«usually» → reads (-s), «today» → he's playing.",
+  answers:["My friend usually reads a book in the evening but today he's playing computer games","My friend usually reads a book in the evening but he's playing computer games today","In the evening my friend usually reads a book but today he's playing computer games"]},
+ {t:"morning / I / every / run / but / today / running / not / I'm", tense:"mix",
+  hint:"«every morning» → run, «today» inkor shakl: I'm not running.",
+  answers:["I run every morning but today I'm not running","I run every morning but I'm not running today","Every morning I run but today I'm not running"]},
+ {t:"usually / work / he / to / goes / car / by / but / today / going / bus / by / he's", tense:"mix",
+  hint:"«usually» → goes, «today» → he's going. Transport: by car / by bus.",
+  answers:["He usually goes to work by car but today he's going by bus","He usually goes to work by car but he's going by bus today"]},
+ {t:"every / cooks / my / day / mom / food / but / now / talking / phone / she's / on / the", tense:"mix",
+  hint:"«every day» → cooks, «now» → she's talking on the phone.",
+  answers:["My mom cooks food every day but now she's talking on the phone","My mom cooks food every day but she's talking on the phone now"]},
+ {t:"usually / don't / English / I / at / learn / night / but / English / I'm / tonight / learning", tense:"mix",
+  hint:"Present Simple inkori: don't + fe'l. «tonight» → I'm learning.",
+  answers:["I usually don't learn English at night but tonight I'm learning English","I don't usually learn English at night but tonight I'm learning English","I usually don't learn English at night but I'm learning English tonight"]},
+ {t:"every / breakfast / she / morning / has / but / today / breakfast / isn't / having / she", tense:"mix",
+  hint:"«every morning» → has, «today» inkori: she isn't having.",
+  answers:["She has breakfast every morning but today she isn't having breakfast","She has breakfast every morning but she isn't having breakfast today"]},
+ {t:"usually / don't / weekends / I / work / on / but / Sunday / this / working / I'm", tense:"mix",
+  hint:"Inkor: I usually don't work on weekends. «this Sunday» → I'm working.",
+  answers:["I usually don't work on weekends but this Sunday I'm working","I don't usually work on weekends but this Sunday I'm working"]},
+ {t:"usually / studies / my / English / friend / but / now / math / he's / learning", tense:"mix",
+  hint:"«usually» → studies (-s), «now» → he's learning.",
+  answers:["My friend usually studies English but now he's learning math","My friend usually studies English but he's learning math now"]}
+];
+
+const KEY = "english-drills-v2";
+const AP = "ʻ"; // o'zbekcha tutuq belgisi
+const BONUS_MIN = 18;  // bonus ochilishi uchun kerakli mustaqil to'g'ri javoblar
+let bonusShown = false, booted = false;
+
+const items = DATA.map(d => ({t:d.t, tense:d.tense, hint:d.hint, answers:d.answers, words:d.t.split(" / ")}));
+const fresh = () => items.map(() => ({placed:[], status:"idle", tries:0}));
+let state = fresh();
+
+try{
+  const raw = localStorage.getItem(KEY);
+  if(raw){
+    const saved = JSON.parse(raw);
+    if(Array.isArray(saved) && saved.length === items.length) state = saved;
+  }
+}catch(e){}
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+const norm = s => s.toLowerCase().replace(/[.,!?]/g, "").replace(/\s+/g, " ").trim();
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+const list = document.getElementById("list");
+list.innerHTML = ""; // JS'siz ko'rinadigan statik nusxani almashtiramiz
+
+items.forEach((it, i) => {
+  const card = document.createElement("section");
+  card.className = "card";
+  card.dataset.i = String(i);
+  card.innerHTML =
+    '<div class="top">' +
+      '<span class="num">' + String(i + 1).padStart(2, "0") + '</span>' +
+      '<span class="task-label">Gapni tuzing</span>' +
+      '<span class="mark" aria-hidden="true">&#10003;</span>' +
+    '</div>' +
+    '<div class="answer" data-role="answer"></div>' +
+    '<p class="pool-label">So' + AP + 'zlar</p>' +
+    '<div class="pool" data-role="pool"></div>' +
+    '<div class="actions">' +
+      '<button class="btn" data-act="check">Tekshirish</button>' +
+      '<button class="btn ghost" data-act="clear">Tozalash</button>' +
+      '<button class="btn ghost" data-act="hint">Maslahat</button>' +
+    '</div>' +
+    '<div class="msg" data-role="msg"></div>';
+  list.appendChild(card);
+});
+
+function render(i){
+  const card = list.children[i], it = items[i], st = state[i];
+  const ans = card.querySelector('[data-role="answer"]');
+  const pool = card.querySelector('[data-role="pool"]');
+  const done = st.status === "correct" || st.status === "shown";
+
+  ans.innerHTML = "";
+  if(st.placed.length === 0){
+    const ph = document.createElement("span");
+    ph.className = "ph";
+    ph.textContent = "Gapni shu yerda tuzing…";
+    ans.appendChild(ph);
+  }else{
+    st.placed.forEach((wi, p) => {
+      const b = document.createElement("button");
+      b.className = "slot";
+      b.dataset.p = String(p);
+      b.textContent = it.words[wi];
+      b.title = "Olib tashlash";
+      ans.appendChild(b);
+    });
+  }
+
+  pool.innerHTML = "";
+  it.words.forEach((w, wi) => {
+    const b = document.createElement("button");
+    b.className = "chip" + (st.placed.indexOf(wi) > -1 ? " used" : "");
+    b.dataset.w = String(wi);
+    b.textContent = w;
+    pool.appendChild(b);
+  });
+
+  card.classList.toggle("is-ok", done);
+  card.classList.toggle("is-bad", st.status === "wrong");
+  card.querySelector('[data-act="check"]').disabled = done;
+
+  const msg = card.querySelector('[data-role="msg"]');
+  if(st.status === "correct"){
+    msg.className = "msg show ok";
+    msg.innerHTML = "To" + AP + "g" + AP + "ri! <span class=\"sol\">" + esc(it.answers[0]) + ".</span>";
+  }else if(st.status === "shown"){
+    msg.className = "msg show info";
+    msg.innerHTML = "To" + AP + "g" + AP + "ri javob: <span class=\"sol\">" + esc(it.answers[0]) + ".</span><small>" + esc(it.hint) + "</small>";
+  }else if(st.status !== "wrong"){
+    msg.className = "msg";
+    msg.innerHTML = "";
+  }
+  updateStats();
+}
+
+function updateStats(){
+  const done = state.filter(s => s.status === "correct" || s.status === "shown").length;
+  const ok = state.filter(s => s.status === "correct").length;
+  const clean = state.filter(s => s.status === "correct" && !s.tries).length;
+  document.getElementById("s-ok").textContent = String(ok);
+  document.getElementById("s-left").textContent = String(items.length - done);
+  document.getElementById("s-bar").style.width = (done / items.length * 100) + "%";
+  const fin = document.getElementById("finish");
+  fin.classList.toggle("show", done === items.length);
+  if(done === items.length){
+    document.getElementById("finish-text").textContent =
+      "Birinchi urinishda to" + AP + "g" + AP + "ri yechilgan: " + clean + " / " + items.length +
+      (clean >= BONUS_MIN
+        ? " — bonus ochildi, pastdan o" + AP + "qing."
+        : ". Bonus uchun kamida " + BONUS_MIN + " ta kerak edi — tozalab, qaytadan urinib ko" + AP + "ring.");
+  }
+
+  const bonus = document.getElementById("bonus");
+  const open = clean >= BONUS_MIN;
+  document.getElementById("bonus-count").textContent = String(clean);
+  bonus.classList.toggle("open", open);
+  document.getElementById("bonus-icon").textContent = open ? "✨" : "🔒";
+  document.getElementById("bonus-title").textContent = open
+    ? "Bonus: Present Simple va Present Continuous"
+    : "Bonus qulfda";
+  if(open && !bonusShown){
+    bonusShown = true;
+    if(booted) bonus.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+  if(!open) bonusShown = false;
+}
+
+function check(i){
+  const it = items[i], st = state[i];
+  const card = list.children[i];
+  const msg = card.querySelector('[data-role="msg"]');
+
+  if(st.placed.length < it.words.length){
+    st.status = "idle";
+    render(i);
+    msg.className = "msg show bad";
+    msg.textContent = "Barcha so" + AP + "zlar ishlatilmadi — yana " +
+      (it.words.length - st.placed.length) + " ta so" + AP + "z qoldi.";
+    return;
+  }
+
+  const said = norm(st.placed.map(wi => it.words[wi]).join(" "));
+  if(it.answers.some(a => norm(a) === said)){
+    st.status = "correct";
+    save(); render(i);
+    return;
+  }
+
+  st.tries++;
+  st.status = "wrong";
+  const words = said.split(" ");
+  let best = {len:-1, v:it.answers[0]};
+  for(const a of it.answers){
+    const aw = norm(a).split(" ");
+    let n = 0;
+    while(n < words.length && n < aw.length && words[n] === aw[n]) n++;
+    if(n > best.len) best = {len:n, v:a};
+  }
+  save(); render(i);
+
+  card.querySelectorAll(".slot").forEach((s, p) => {
+    if(p < best.len) s.classList.add("w-ok");
+    else if(p === best.len) s.classList.add("w-bad");
+  });
+  msg.className = "msg show bad";
+  msg.innerHTML = "Xato. " + (best.len > 0
+      ? "Birinchi <b>" + best.len + "</b> ta so" + AP + "z o" + AP + "z joyida, ammo <b>" +
+        (best.len + 1) + "-o" + AP + "rindagi</b> so" + AP + "z noto" + AP + "g" + AP + "ri."
+      : "Birinchi so" + AP + "zdanoq tartib noto" + AP + "g" + AP + "ri.") +
+    "<br><small>" + esc(it.hint) + "</small>" +
+    "<span class=\"sol\">To" + AP + "g" + AP + "ri variant: " + esc(best.v) + ".</span>";
+}
+
+list.addEventListener("click", (e) => {
+  const card = e.target.closest(".card");
+  if(!card) return;
+  const i = Number(card.dataset.i), st = state[i], it = items[i];
+
+  const chip = e.target.closest(".chip");
+  if(chip){
+    const wi = Number(chip.dataset.w);
+    if(st.placed.indexOf(wi) === -1){
+      st.placed.push(wi);
+      if(st.status === "wrong") st.status = "idle";
+      save(); render(i);
+    }
+    return;
+  }
+
+  const slot = e.target.closest(".slot");
+  if(slot){
+    st.placed.splice(Number(slot.dataset.p), 1);
+    if(st.status === "wrong") st.status = "idle";
+    save(); render(i);
+    return;
+  }
+
+  const btn = e.target.closest("button[data-act]");
+  if(!btn) return;
+
+  if(btn.dataset.act === "check") check(i);
+
+  if(btn.dataset.act === "clear"){
+    st.placed = []; st.status = "idle";
+    save(); render(i);
+  }
+
+  if(btn.dataset.act === "hint"){
+    if(st.status === "correct" || st.status === "shown") return;
+    const msg = card.querySelector('[data-role="msg"]');
+    msg.className = "msg show info";
+    msg.innerHTML = "<b>Maslahat:</b> " + esc(it.hint);
+  }
+
+});
+
+function reset(){
+  state = fresh();
+  save();
+  items.forEach((_, i) => render(i));
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+document.getElementById("clear-all").addEventListener("click", () => {
+  if(confirm("Barcha javoblar va natija o" + AP + "chiriladi. Davom etasizmi?")) reset();
+});
+document.getElementById("restart").addEventListener("click", reset);
+
+items.forEach((_, i) => render(i));
+booted = true;
+</script>
