@@ -1,3 +1,9 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Every Day vs Right Now</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,11 +43,17 @@
   }
 
   *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  :root{
+    padding-top:env(safe-area-inset-top, 0px);
+    padding-bottom:env(safe-area-inset-bottom, 0px);
+  }
   body{
     margin:0; background:var(--bg); color:var(--ink);
-    font-family:var(--f-body); font-size:16px; line-height:1.55;
-    -webkit-text-size-adjust:100%;
+    font-family:var(--f-body); font-size:17px; line-height:1.55;
   }
+  img{max-width:100%}
+  [hidden]{display:none !important}
   .wrap{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:0 56px}
 
   /* ---------- yopishib turuvchi progress paneli ---------- */
@@ -87,8 +99,22 @@
     padding:16px 16px 14px; box-shadow:var(--shadow); position:relative;
     border-left:3px solid var(--line);
   }
+  .card.is-active{
+    border-left-color:var(--accent);
+    animation:riseIn .32s ease both;
+  }
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(10px)}
+    to{opacity:1; transform:none}
+  }
   .card.is-ok{border-color:var(--ok); border-left-color:var(--ok)}
   .card.is-bad{border-left-color:var(--bad)}
+  .card.is-ok .actions{display:none}
+  .next-note{
+    display:none; margin-top:10px; font-family:var(--f-mono); font-size:12px;
+    letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft);
+  }
+  .card.is-ok .next-note{display:block}
   .top{display:flex; align-items:center; gap:10px; margin-bottom:12px}
   .num{font-family:var(--f-mono); font-size:13px; font-weight:600; color:var(--ink-soft); font-variant-numeric:tabular-nums}
   .task-label{
@@ -236,32 +262,42 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none !important; animation:none !important} }
   /* ---------- telefon uchun kattaroq o'lchamlar ---------- */
   @media (max-width:640px){
-    body{font-size:17.5px; line-height:1.6}
-    .wrap{padding-inline:14px}
-    .bar-in{padding:9px 14px}
-    .bar-name{font-size:16px}
-    .counts{font-size:14px; gap:12px}
-    header.intro{padding-block:26px 18px}
-    .eyebrow{font-size:12px}
-    .lede{font-size:16.5px}
-    .task{font-size:16.5px; padding:14px}
-    .card{padding:15px 13px 13px}
-    .num{font-size:15px}
-    .task-label{font-size:12px}
-    .pool-label{font-size:12px}
-    .answer{min-height:64px; padding:10px}
-    .answer .ph{font-size:16px}
-    .chip, .slot{font-size:18px; padding:12px 15px; border-radius:9px}
-    .pool{gap:9px}
-    .answer{gap:9px}
-    .btn{font-size:16.5px; padding:12px 18px; border-radius:9px}
-    .msg{font-size:16.5px; padding:11px 13px}
-    .msg .sol{font-size:18px}
-    .msg small{font-size:15.5px}
-    .bonus-head h2{font-size:19px}
-    .bonus-shut{font-size:16.5px}
-    .rowlist li{grid-template-columns:1fr; gap:2px}
-    .foot{font-size:14.5px}
+    body{font-size:20px; line-height:1.6}
+    .wrap{padding-inline:14px; padding-block:0 48px}
+    .bar-in{padding:10px 14px}
+    .bar-name{font-size:18px}
+    .counts{font-size:16px; gap:14px}
+    header.intro{padding-block:24px 18px}
+    .eyebrow{font-size:13px; letter-spacing:.1em}
+    h1{font-size:clamp(34px, 9vw, 46px)}
+    .lede{font-size:19px}
+    .task{font-size:19px; padding:15px}
+    .card{padding:17px 14px 15px}
+    .num{font-size:17px}
+    .task-label{font-size:13px}
+    .pool-label{font-size:13px; margin-top:16px}
+    .answer{min-height:76px; padding:11px; gap:10px}
+    .answer .ph{font-size:18px}
+    .chip, .slot{font-size:22px; padding:13px 16px; border-radius:10px}
+    .pool{gap:10px}
+    .actions{gap:10px; margin-top:16px}
+    .btn{font-size:19px; padding:14px 20px; border-radius:10px}
+    .msg{font-size:19px; padding:13px 15px}
+    .msg .sol{font-size:21px}
+    .msg small{font-size:18px}
+    .bonus-head h2{font-size:21px}
+    .bonus-gate{font-size:14px}
+    .bonus-shut{font-size:19px}
+    .tense-box h3{font-size:21px}
+    .tense-box .when{font-size:17px}
+    .rowlist li{grid-template-columns:1fr; gap:2px; font-size:18px}
+    .rowlist span{font-size:12px}
+    .rowlist code{font-size:16px}
+    .bonus-note{font-size:18px}
+    .finish h2{font-size:24px}
+    .foot{font-size:16px}
+    .warn{font-size:19px}
+    .warn b{font-size:20px}
   }
 </style>
 
@@ -281,7 +317,7 @@
     <p class="eyebrow">Present Simple &middot; Present Continuous &mdash; 20 ta mashq</p>
     <h1>So&#700;zlarni tartibga sol: <em>every day</em> yoki <span>right now</span>?</h1>
     <p class="lede">Har bir mashqda so&#700;zlar aralashib ketgan. So&#700;zni bosing &mdash; u yuqoridagi qatorga tushadi; qatordagi so&#700;zni bossangiz, u orqaga qaytadi. Gap to&#700;liq tuzilgach <b>Tekshirish</b> tugmasini bosing: javob shu zahoti to&#700;g&#700;ri yoki xato ekani ko&#700;rinadi. Xato bo&#700;lsa, tartib qaysi so&#700;zdan buzilgani belgilanadi, izoh va to&#700;g&#700;ri variant chiqadi &mdash; keyin qayta urinib ko&#700;rishingiz mumkin.</p>
-    <p class="task">Qaysi gapda qaysi zamon kerakligini <b>o&#700;zingiz aniqlaysiz</b> &mdash; gapdagi vaqt ifodasiga qarang. Sahifa oxirida <b>bonus</b> bor: uni 20 ta mashqdan kamida 18 tasini <b>birinchi urinishdayoq</b> to&#700;g&#700;ri yechgan o&#700;quvchi ochadi.</p>
+    <p class="task"><b>Mashqlar birma-bir ochiladi:</b> keyingi gap joriy gapni to&#700;g&#700;ri yechganingizdan keyin chiqadi. Qaysi gapda qaysi zamon kerakligini <b>o&#700;zingiz aniqlaysiz</b> &mdash; gapdagi vaqt ifodasiga qarang. Sahifa oxirida <b>bonus</b> bor: uni 20 ta mashqdan kamida 18 tasini <b>birinchi urinishdayoq</b> to&#700;g&#700;ri yechgan o&#700;quvchi ochadi.</p>
     <noscript>
       <div class="warn">
         <b>Mashqlar hozir ishlamaydi</b>
@@ -317,6 +353,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="1">
         <div class="top">
@@ -338,6 +375,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="2">
         <div class="top">
@@ -363,6 +401,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="3">
         <div class="top">
@@ -386,6 +425,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="4">
         <div class="top">
@@ -410,6 +450,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="5">
         <div class="top">
@@ -431,6 +472,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="6">
         <div class="top">
@@ -456,6 +498,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="7">
         <div class="top">
@@ -481,6 +524,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="8">
         <div class="top">
@@ -503,6 +547,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="9">
         <div class="top">
@@ -525,6 +570,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="10">
         <div class="top">
@@ -554,6 +600,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="11">
         <div class="top">
@@ -582,6 +629,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="12">
         <div class="top">
@@ -614,6 +662,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="13">
         <div class="top">
@@ -640,6 +689,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="14">
         <div class="top">
@@ -670,6 +720,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="15">
         <div class="top">
@@ -700,6 +751,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="16">
         <div class="top">
@@ -729,6 +781,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="17">
         <div class="top">
@@ -757,6 +810,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="18">
         <div class="top">
@@ -785,6 +839,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
       <section class="card" data-i="19">
         <div class="top">
@@ -812,6 +867,7 @@
           <button class="btn ghost" data-act="hint">Maslahat</button>
         </div>
         <div class="msg" data-role="msg"></div>
+        <div class="next-note" data-role="next"></div>
       </section>
   </main>
 
@@ -939,7 +995,7 @@ const DATA = [
 const KEY = "english-drills-v2";
 const AP = "ʻ"; // o'zbekcha tutuq belgisi
 const BONUS_MIN = 18;  // bonus ochilishi uchun kerakli mustaqil to'g'ri javoblar
-let bonusShown = false, booted = false;
+let bonusShown = false, booted = false, lastLimit = -1;
 
 const items = DATA.map(d => ({t:d.t, tense:d.tense, hint:d.hint, answers:d.answers, words:d.t.split(" / ")}));
 const fresh = () => items.map(() => ({placed:[], status:"idle", tries:0}));
@@ -978,7 +1034,8 @@ items.forEach((it, i) => {
       '<button class="btn ghost" data-act="clear">Tozalash</button>' +
       '<button class="btn ghost" data-act="hint">Maslahat</button>' +
     '</div>' +
-    '<div class="msg" data-role="msg"></div>';
+    '<div class="msg" data-role="msg"></div>' +
+    '<div class="next-note" data-role="next"></div>';
   list.appendChild(card);
 });
 
@@ -1029,6 +1086,13 @@ function render(i){
     msg.className = "msg";
     msg.innerHTML = "";
   }
+
+  const note = card.querySelector('[data-role="next"]');
+  if(note){
+    note.textContent = st.status === "correct"
+      ? (i < items.length - 1 ? "Keyingi mashq quyida ↓" : "Oxirgi mashq bajarildi")
+      : "";
+  }
   updateStats();
 }
 
@@ -1062,6 +1126,29 @@ function updateStats(){
     if(booted) bonus.scrollIntoView({behavior:"smooth", block:"start"});
   }
   if(!open) bonusShown = false;
+
+  applyFlow();
+}
+
+// Mashqlar birma-bir ochiladi: keyingisi joriysi to'g'ri yechilgandan keyin ko'rinadi.
+function applyFlow(){
+  let lastSolved = -1;
+  state.forEach((s, i) => { if(s.status === "correct") lastSolved = i; });
+  const limit = Math.min(lastSolved + 1, items.length - 1);
+  const active = state.findIndex(s => s.status !== "correct");
+
+  for(let i = 0; i < items.length; i++){
+    const card = list.children[i];
+    if(!card) continue;
+    card.hidden = i > limit;
+    card.classList.toggle("is-active", i === active && i <= limit);
+  }
+
+  if(booted && limit > lastLimit){
+    const card = list.children[limit];
+    if(card && !card.hidden) card.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+  lastLimit = limit;
 }
 
 function check(i){
@@ -1167,3 +1254,6 @@ document.getElementById("restart").addEventListener("click", reset);
 items.forEach((_, i) => render(i));
 booted = true;
 </script>
+
+</body>
+</html>
